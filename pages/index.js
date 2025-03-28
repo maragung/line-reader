@@ -8,7 +8,7 @@ export default function TxtReader() {
   const [index, setIndex] = useState(0);
   const [currentLine, setCurrentLine] = useState('');
   const [fileName, setFileName] = useState('');
-  const [customUrl, setCustomUrl] = useState('https://move.xyz/[[my-data]]');
+  const [customUrl, setCustomUrl] = useState(Cookies.get('customUrl') || 'https://www.move.xyz/[[my-data]]');
   const [generatedUrl, setGeneratedUrl] = useState('');
   const textAreaRef = useRef(null);
 
@@ -39,6 +39,10 @@ export default function TxtReader() {
       generateLink(lines[index] || '');
     }
   }, [index, lines]);
+
+  useEffect(() => {
+    Cookies.set('customUrl', customUrl);
+  }, [customUrl]);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
