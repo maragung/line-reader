@@ -99,7 +99,7 @@ export default function TxtReader() {
       <input type="file" accept=".txt" onChange={handleFileUpload} className="mb-4 p-2 border rounded shadow-sm" />
       <div className="w-full max-w-lg bg-white p-6 rounded-xl shadow-lg border">
         <p className="text-sm text-gray-600 mb-2 font-medium">📄 File: {fileName || 'No file selected'}</p>
-        <p className="text-sm text-gray-600 mb-2 font-medium">📜 Line {index + 1} / {lines.length}</p>
+        <p className="text-sm text-gray-600 mb-2 font-medium">📜 Line {index} / {lines.length}</p>
         <textarea
           ref={textAreaRef}
           className="w-full p-3 border rounded-lg resize-none bg-gray-100 focus:ring focus:ring-blue-300"
