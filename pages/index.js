@@ -83,14 +83,14 @@ export default function TxtReader() {
   };
 
   return (
-    <div className="flex flex-col items-center p-4 min-h-screen bg-gray-100">
-      <input type="file" accept=".txt" onChange={handleFileUpload} className="mb-4" />
-      <div className="w-full max-w-lg bg-white p-4 rounded-lg shadow-md">
-        <p className="text-sm text-gray-500 mb-2">File: {fileName || 'No file selected'}</p>
-        <p className="text-sm text-gray-500 mb-2">Line {index + 1} / {lines.length}</p>
+    <div className="flex flex-col items-center p-6 min-h-screen bg-gradient-to-b from-blue-100 to-white">
+      <input type="file" accept=".txt" onChange={handleFileUpload} className="mb-4 p-2 border rounded shadow-sm" />
+      <div className="w-full max-w-lg bg-white p-6 rounded-xl shadow-lg border">
+        <p className="text-sm text-gray-600 mb-2 font-medium">📄 File: {fileName || 'No file selected'}</p>
+        <p className="text-sm text-gray-600 mb-2 font-medium">📜 Line {index + 1} / {lines.length}</p>
         <textarea
           ref={textAreaRef}
-          className="w-full p-2 border rounded resize-none"
+          className="w-full p-3 border rounded-lg resize-none bg-gray-100 focus:ring focus:ring-blue-300"
           rows={4}
           value={currentLine}
           readOnly
@@ -99,33 +99,35 @@ export default function TxtReader() {
           <button
             onClick={prevLine}
             disabled={index === 0}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition disabled:bg-gray-300"
           >
-            Back
+            ⬅ Back
           </button>
           <button
             onClick={copyToClipboard}
-            className="px-4 py-2 bg-green-500 text-white rounded"
+            className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition"
           >
-            Copy
+            📋 Copy
           </button>
           <button
             onClick={nextLine}
             disabled={index >= lines.length - 1}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition disabled:bg-gray-300"
           >
-            Next
+            Next ➡
           </button>
         </div>
         <input
           type="text"
-          className="w-full p-2 border rounded mt-4"
+          className="w-full p-3 border rounded-lg mt-4 bg-gray-100 focus:ring focus:ring-blue-300"
           placeholder="Enter URL with [[my-data]]"
           value={customUrl}
           onChange={(e) => setCustomUrl(e.target.value)}
         />
         {generatedUrl && (
-          <a href={generatedUrl} target="_blank" rel="noopener noreferrer" className="mt-2 text-blue-500 break-all underline">{generatedUrl}</a>
+          <a href={generatedUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-blue-500 break-all underline block text-center text-lg font-semibold hover:text-blue-700 transition">
+            🔗 Open Link
+          </a>
         )}
       </div>
     </div>
