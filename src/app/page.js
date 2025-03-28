@@ -10,6 +10,8 @@ export default function TxtReader() {
   const [fileName, setFileName] = useState('');
   const [customUrl, setCustomUrl] = useState(Cookies.get('customUrl') || 'https://go.to/[[my-data]]');
   const [generatedUrl, setGeneratedUrl] = useState('');
+  const [showGoToPopup, setShowGoToPopup] = useState(false);
+  const [goToIndex, setGoToIndex] = useState('');
   const textAreaRef = useRef(null);
 
   useEffect(() => {
@@ -82,6 +84,16 @@ export default function TxtReader() {
     setGeneratedUrl(customUrl.replace('[[my-data]]', text));
   };
 
+  const handleGoTo = () => {
+    const parsedIndex = parseInt(goToIndex, 10);
+    if (!isNaN(parsedIndex) && parsedIndex >= 0 && parsedIndex < lines.length) {
+      setIndex(parsedIndex);
+      setShowGoToPopup(false);
+    } else {
+      alert('Invalid index');
+    }
+  };
+
   return (
     <div className="flex flex-col items-center p-6 min-h-screen bg-gradient-to-b from-blue-100 to-white">
       <input type="file" accept=".txt" onChange={handleFileUpload} className="mb-4 p-2 border rounded shadow-sm" />
@@ -104,17 +116,23 @@ export default function TxtReader() {
             ⬅ Back
           </button>
           <button
+            onClick={nextLine}
+            disabled={index >= lines.length - 1}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition disabled:bg-gray-300"
+          >
+            Next ➡
+          </button>
+          <button
             onClick={copyToClipboard}
             className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition"
           >
             📋 Copy
           </button>
           <button
-            onClick={nextLine}
-            disabled={index >= lines.length - 1}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition disabled:bg-gray-300"
+            onClick={() => setShowGoToPopup(true)}
+            className="px-4 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 transition"
           >
-            Next ➡
+            🔄 GoTo
           </button>
         </div>
         <input
@@ -130,6 +148,35 @@ export default function TxtReader() {
           </a>
         )}
       </div>
+
+      {showGoToPopup && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-xl font-semibold mb-4">Go To Line</h2>
+            <input
+              type="number"
+              value={goToIndex}
+              onChange={(e) => setGoToIndex(e.target.value)}
+              className="w-full p-3 border rounded-lg mb-4 bg-gray-100 focus:ring focus:ring-blue-300"
+              placeholder="Enter line index"
+            />
+            <div className="flex justify-between">
+              <button
+                onClick={() => setShowGoToPopup(false)}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleGoTo}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                Go
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
